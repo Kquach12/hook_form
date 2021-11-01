@@ -7,10 +7,15 @@ const Form = (props) => {
     const [email, setEmail] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
 
+    const [firstNameError, setFirstNameError] = useState("")
+    const [lastNameError, setLastNameError] = useState("")
+    const [passwordError, setPasswordError] = useState("")
+    const [emailError, setEmailError] = useState("")
+    const [confirmPasswordError, setConfirmPasswordError] = useState("")
+
     const createUser = (e) => {
         e.preventDefault();
         
-        // shorthand ES6 syntax for building an object - see notes above
         const newUser = { firstName, lastName, email, password, confirmPassword };
         setFirstName("");
         setLastName("");
@@ -19,25 +24,93 @@ const Form = (props) => {
         setConfirmPassword("");
     }
 
+    const validateFirstName = (e) => {
+        setFirstName(e.target.value)
+        if (e.target.value.length < 2){
+            setFirstNameError("First name must be at least 2 characters!")
+        } 
+        else {
+            setFirstNameError("")
+        }
+    }
+    const validateLastName = (e) => {
+        setLastName(e.target.value)
+        if (e.target.value.length < 2){
+            setLastNameError("Last name must be at least 2 characters!")
+        } 
+        else {
+            setLastNameError("")
+        }
+    }
+    const validateEmail = (e) => {
+        setEmail(e.target.value)
+        if (e.target.value.length < 5){
+            setEmailError("Email must be at least 5 characters!")
+        } 
+        else {
+            setEmailError("")
+        }
+    }
+    const validatePassword = (e) => {
+        setPassword(e.target.value)
+
+        if (e.target.value.length < 8){
+            setPasswordError("Password must be at least 8 characters!")
+        } 
+        else {
+            setPasswordError("")
+        }
+    }
+    const validateConfirmPassword = (e) => {
+        setConfirmPassword(e.target.value)
+
+        if (e.target.value !== password){
+            setConfirmPasswordError("Passwords must match!")
+        } 
+        else {
+            setConfirmPasswordError("")
+        }
+    }
+
     return(
         <div>
             <div>
                 <form onSubmit={createUser}>
                     <label>First Name: </label>
-                    <input type="text" value={firstName} onChange = { (e) => setFirstName(e.target.value)}/>
-                    <br/>
+                    <input type="text" value={firstName} onChange = {validateFirstName}/>
+                    {
+                        validateFirstName ? 
+                        <p>{ firstNameError }</p> :
+                        ''
+                    }
                     <label>Last Name: </label>
-                    <input type="text" value={lastName} onChange = { (e) => setLastName(e.target.value)}/>
-                    <br/>
+                    <input type="text" value={lastName} onChange = { validateLastName }/>
+                    {
+                        validateLastName ? 
+                        <p>{ lastNameError }</p> :
+                        ''
+                    }
                     <label>Email: </label>
-                    <input type="text" value={email} onChange = { (e) => setEmail(e.target.value)}/>
-                    <br/>
+                    <input type="text" value={email} onChange = { validateEmail }/>
+                    {
+                        validateEmail ? 
+                        <p>{ emailError }</p> :
+                        ''
+                    }
                     <label>Password: </label>
-                    <input type="password" value={password} onChange={ (e) => setPassword(e.target.value) }/>
-                    <br/>
+                    <input type="password" value={password} onChange={ validatePassword }/>
+                    {
+                        validatePassword ? 
+                        <p>{ passwordError }</p> :
+                        ''
+                    }
                     <label>Confirm Password: </label>
-                    <input type="password" value={confirmPassword} onChange={ (e) => setConfirmPassword(e.target.value) }/>
-                    <br/>
+                    <input type="password" value={confirmPassword} onChange={ validateConfirmPassword }/>
+                    {
+                        validateConfirmPassword ? 
+                        <p>{ confirmPasswordError }</p> :
+                        ''
+                    }
                     <input type="submit" />
                 </form>
             </div>
